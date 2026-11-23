@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import '../services/api.dart';
 import '../services/auth_storage.dart';
 import 'login_screen.dart';
-
+import 'nova_movimentacao_screen.dart';
 // Formata 1234.5 como "R$ 1.234,50"
 // formatador pronto
 final _moeda = NumberFormat.currency(locale: 'pt_BR', symbol: r'R$');
@@ -98,6 +98,19 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
     );
   }
 
+  // abre a tela de nova movimentação e, se salvou, recarrega os números
+  Future<void> _novaMovimentacao() async {
+    final salvou = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => const NovaMovimentacaoScreen()),
+    );
+    if (salvou != true || !mounted) return; // voltou sem salvar, ou saiu da tela
+
+    _carregar(); // busca tudo de novo: saldo, entradas, saídas e lista
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Movimentação registrada')),
+    );
+  }
+
   Future<void> _sair() async { // apaga o token do celular e volta para a tela de login
     await AuthStorage.apagarToken();
     _irParaLogin();
@@ -117,6 +130,12 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
         ],
       ),
       body: _conteudo(), // chama o método que escolhe o que mostrar: carregando, erro ou os dados
+      // botão flutuante no canto de baixo para lançar uma movimentação
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _novaMovimentacao,
+        icon: const Icon(Icons.add),
+        label: const Text('Nova movimentação'),
+      ),
     );
   }
 
@@ -153,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
       onRefresh: _carregar,
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(), // deixa puxar para atualizar mesmo quando a lista é curta
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 96), // espaço embaixo para o botão flutuante não cobrir a lista
         children: [
           _CardValor(titulo: 'Saldo total', valor: _saldoTotal, destaque: true),
           const SizedBox(height: 12),
