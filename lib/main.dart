@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'screens/login_screen.dart';
+import 'theme/app_theme.dart'; 
 
 void main() {
   runApp(const FinanceControlApp());
@@ -15,9 +16,9 @@ class FinanceControlApp extends StatelessWidget {
     return MaterialApp(
       title: 'financeControl',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-      ),
+      theme: temaClaro(), 
+      darkTheme: temaEscuro(), 
+      themeMode: ThemeMode.system, 
       home: const LoginScreen(),
     );
   }
