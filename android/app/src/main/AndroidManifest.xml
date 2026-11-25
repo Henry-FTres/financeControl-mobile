@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- [LOCAL] Permissão de internet e liberação de HTTP (API local) no Android -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="finance_control_mobile"

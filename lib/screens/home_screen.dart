@@ -13,6 +13,7 @@ final _moeda = NumberFormat.currency(locale: 'pt_BR', symbol: r'R$');
 // transforma de dynamic para double, mesmo que seja String ou int
 double _numero(dynamic valor) => double.parse(valor.toString());
 
+// [LOCAL] Tela home do app: saldo, resumo do mês e últimas movimentações
 class HomeScreen extends StatefulWidget { // é descartável, não precisa de parâmetros
   const HomeScreen({super.key});
 
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
     _carregar();
   }
 
+  // [LOCAL] Busca os dados da home: GET /users/me, /accounts e /transactions; calcula o mês
   Future<void> _carregar() async { // future é o tipo de dado que vai demorar para chegar, async define que a função é assíncrona e o await espera ele chegar
     try {
       // Faz as três requisições ao mesmo tempo e espera todas
@@ -99,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
   }
 
   // abre a tela de nova movimentação e, se salvou, recarrega os números
+  // [LOCAL] Ação do botão "Nova movimentação": abre a tela e recarrega a home se salvou
   Future<void> _novaMovimentacao() async {
     final salvou = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => const NovaMovimentacaoScreen()),
@@ -111,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
     );
   }
 
+  // [LOCAL] Ação do botão "Sair"
   Future<void> _sair() async { // apaga o token do celular e volta para a tela de login
     await AuthStorage.apagarToken();
     _irParaLogin();
@@ -122,6 +126,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
       appBar: AppBar(
         title: Text(_nome.isEmpty ? 'financeControl' : 'Olá, $_nome'),
         actions: [ // barra inferior da tela, com o botão de sair
+          // [LOCAL] Botão "Sair" (ícone no canto superior direito da barra do topo)
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Sair',
@@ -131,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
       ),
       body: _conteudo(), // chama o método que escolhe o que mostrar: carregando, erro ou os dados
       // botão flutuante no canto de baixo para lançar uma movimentação
+      // [LOCAL] Botão flutuante "Nova movimentação" (canto inferior direito)
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _novaMovimentacao,
         icon: const Icon(Icons.add),
@@ -154,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
           children: [
             Text(_erro!),
             const SizedBox(height: 12),
+            // [LOCAL] Botão "Tentar de novo" (aparece quando dá erro)
             FilledButton(
               onPressed: () {
                 setState(() => _carregando = true);
@@ -174,8 +181,10 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
         physics: const AlwaysScrollableScrollPhysics(), // deixa puxar para atualizar mesmo quando a lista é curta
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 96), // espaço embaixo para o botão flutuante não cobrir a lista
         children: [
+          // [LOCAL] Card "Saldo total" (topo)
           _CardValor(titulo: 'Saldo total', valor: _saldoTotal, destaque: true),
           const SizedBox(height: 12),
+          // [LOCAL] Cards "Entradas do mês" (verde) e "Saídas do mês" (vermelho), lado a lado
           Row(
             children: [
               Expanded(
@@ -196,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
             ],
           ),
           const SizedBox(height: 24),
+          // [LOCAL] Lista "Últimas movimentações" (as 5 mais recentes)
           Text(
             'Últimas movimentações',
             style: Theme.of(context).textTheme.titleMedium,
@@ -212,6 +222,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
 }
 
 // card reaproveitável: só exibe um título e um valor em dinheiro (Stateless: não muda sozinho)
+// [LOCAL] Widget do card de valor (usado nos 3 cards da home)
 class _CardValor extends StatelessWidget {
   final String titulo;
   final double valor;
@@ -249,6 +260,7 @@ class _CardValor extends StatelessWidget {
 }
 
 // linha da lista: ícone, quem pagou/recebeu, data e valor (verde = entrada, vermelho = saída)
+// [LOCAL] Widget de uma linha da lista de movimentações
 class _LinhaMovimentacao extends StatelessWidget {
   final dynamic movimentacao;
 

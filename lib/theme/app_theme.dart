@@ -1,6 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 
+// [LOCAL] Cores do app: as mesmas do site (globals.css), em versão clara e escura
 // ===== Cores do design system (mesmos tokens do globals.css da web) =====
 class FcCores {
   final Color surface100, surface200, surface300;
@@ -60,6 +61,7 @@ class FcCores {
       Theme.of(context).brightness == Brightness.dark ? escuro : claro;
 }
 
+// [LOCAL] Temas claro e escuro usados no main.dart (fonte Manrope, botões, cards, campos)
 // ===== Temas usados no main.dart =====
 ThemeData temaClaro() => _criarTema(FcCores.claro, Brightness.light);
 ThemeData temaEscuro() => _criarTema(FcCores.escuro, Brightness.dark);
