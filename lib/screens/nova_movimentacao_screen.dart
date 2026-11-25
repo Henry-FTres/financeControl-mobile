@@ -3,10 +3,14 @@ import 'package:material_ui/material_ui.dart';
 
 import '../services/api.dart';
 
-// Lê o valor digitado ("1.234,56" ou "86,90") e devolve um número (1234.56 / 86.9).
-// Devolve null quando o texto não é um número.
+// Lê o valor digitado e devolve um número. Aceita "12,50", "12.50" e "1.234,56".
+// Com vírgula: a vírgula é o decimal e os pontos são milhar.
+// Sem vírgula: o ponto é o decimal.
 double? _lerValor(String texto) {
-  final limpo = texto.trim().replaceAll('.', '').replaceAll(',', '.');
+  var limpo = texto.trim();
+  if (limpo.contains(',')) {
+    limpo = limpo.replaceAll('.', '').replaceAll(',', '.');
+  }
   return double.tryParse(limpo);
 }
 
@@ -202,9 +206,13 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
               hintText: '0,00',
               border: OutlineInputBorder(),
             ),
-            validator: (texto) {
+                        validator: (texto) {
               final valor = _lerValor(texto ?? '');
               if (valor == null || valor <= 0) return 'Informe um valor maior que zero';
+              // a API aceita no máximo 2 casas decimais (centavos)
+              if (valor != double.parse(valor.toStringAsFixed(2))) {
+                return 'Use no máximo 2 casas decimais';
+              }
               return null; // null = campo válido
             },
           ),
