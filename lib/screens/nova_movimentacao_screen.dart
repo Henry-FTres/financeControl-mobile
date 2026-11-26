@@ -14,10 +14,8 @@ double? _lerValor(String texto) {
   return double.tryParse(limpo);
 }
 
-// ======================================================================
-// TELA: cadastrar uma movimentação (entrada ou saída)
+// Tela para cadastrar uma movimentação (entrada ou saída)
 // Ao salvar, volta para a tela anterior avisando "true" (salvou).
-// ======================================================================
 class NovaMovimentacaoScreen extends StatefulWidget {
   const NovaMovimentacaoScreen({super.key});
 
@@ -26,33 +24,26 @@ class NovaMovimentacaoScreen extends StatefulWidget {
 }
 
 class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
-  // ---------- Chave do formulário: valida todos os campos de uma vez ----------
   final _formKey = GlobalKey<FormState>();
 
-  // ---------- Controllers: guardam o que foi digitado nos campos de texto ----------
   final _valorController = TextEditingController();
   final _quemController = TextEditingController();
   final _descricaoController = TextEditingController();
 
-  // ---------- Escolhas do formulário (o que não é texto digitado) ----------
   String _tipo = 'SAIDA'; // 'SAIDA' ou 'ENTRADA'
   DateTime _data = DateTime.now(); // começa com hoje
   int? _contaId; // conta escolhida
   int? _categoriaId; // null = sem categoria
   bool _fixa = false;
 
-  // ---------- Listas vindas da API (opções das caixas de escolha) ----------
   List<dynamic> _contas = [];
   List<dynamic> _categorias = [];
 
-  // ---------- Estado da tela ----------
   bool _carregando = true; // buscando contas e categorias
   bool _salvando = false; // enviando para a API
   String? _erro;
 
-  // ======================================================================
-  // CICLO DE VIDA: o que roda quando a tela abre e quando fecha
-  // ======================================================================
+  // O que roda quando a tela abre e quando fecha
   @override
   void initState() {
     super.initState();
@@ -67,9 +58,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
     super.dispose();
   }
 
-  // ======================================================================
-  // API: busca as contas e as categorias para as caixas de escolha
-  // ======================================================================
+  // Busca as contas e as categorias para as caixas de escolha
   Future<void> _carregarListas() async {
     try {
       final respostas = await Future.wait([
@@ -94,9 +83,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
     }
   }
 
-  // ======================================================================
-  // DATA: abre o calendário e guarda o dia escolhido
-  // ======================================================================
+  // Abre o calendário e guarda o dia escolhido
   Future<void> _escolherData() async {
     final escolhida = await showDatePicker(
       context: context,
@@ -107,9 +94,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
     if (escolhida != null) setState(() => _data = escolhida);
   }
 
-  // ======================================================================
-  // SALVAR: valida os campos e envia para a API (que atualiza o saldo da conta)
-  // ======================================================================
+  // Valida os campos e envia para a API (que atualiza o saldo da conta)
   Future<void> _salvar() async {
     // roda o "validator" de cada campo; se algum devolver erro, para aqui
     if (!_formKey.currentState!.validate()) return;
@@ -144,9 +129,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
     }
   }
 
-  // ======================================================================
-  // TELA: escolhe o que mostrar (carregando, sem contas ou o formulário)
-  // ======================================================================
+  // Escolhe o que mostrar (carregando, sem contas ou o formulário)
   @override
   Widget build(BuildContext context) {
     Widget conteudo;
@@ -175,9 +158,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
     );
   }
 
-  // ======================================================================
-  // FORMULÁRIO: todos os campos, um embaixo do outro
-  // ======================================================================
+  // Todos os campos do formulário, um embaixo do outro
   Widget _formulario() {
     final saida = _tipo == 'SAIDA';
 
@@ -186,7 +167,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // ---------- Tipo: saída ou entrada ----------
           SegmentedButton<String>(
             segments: const [
               ButtonSegment(value: 'SAIDA', label: Text('Saída'), icon: Icon(Icons.arrow_upward)),
@@ -197,7 +177,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Valor ----------
           TextFormField(
             controller: _valorController,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -219,7 +198,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Data (abre o calendário ao tocar) ----------
           InkWell(
             onTap: _escolherData,
             child: InputDecorator(
@@ -233,7 +211,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Quem pagou ou recebeu (o texto muda com o tipo) ----------
           TextFormField(
             controller: _quemController,
             decoration: InputDecoration(
@@ -250,7 +227,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Conta (caixa de escolha) ----------
           DropdownButtonFormField<int>(
             initialValue: _contaId,
             isExpanded: true,
@@ -267,7 +243,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Categoria (opcional; a primeira opção é "Sem categoria") ----------
           DropdownButtonFormField<int?>(
             initialValue: _categoriaId,
             isExpanded: true,
@@ -284,7 +259,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ---------- Descrição (opcional) ----------
           TextFormField(
             controller: _descricaoController,
             decoration: const InputDecoration(
@@ -294,7 +268,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 8),
 
-          // ---------- Fixa: liga/desliga ----------
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Movimentação fixa'),
@@ -303,14 +276,12 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
             onChanged: (valor) => setState(() => _fixa = valor),
           ),
 
-          // ---------- Erro vindo da API ----------
           if (_erro != null) ...[
             const SizedBox(height: 8),
             Text(_erro!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
           ],
           const SizedBox(height: 24),
 
-          // ---------- Botão de salvar (vira bolinha enquanto envia) ----------
           FilledButton(
             onPressed: _salvando ? null : _salvar,
             child: _salvando

@@ -1,7 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 
-// ===== Cores do design system (mesmos tokens do globals.css da web) =====
 class FcCores {
   final Color surface100, surface200, surface300;
   final Color line, lineStrong, ink, inkMuted;
@@ -60,7 +59,6 @@ class FcCores {
       Theme.of(context).brightness == Brightness.dark ? escuro : claro;
 }
 
-// ===== Temas usados no main.dart =====
 ThemeData temaClaro() => _criarTema(FcCores.claro, Brightness.light);
 ThemeData temaEscuro() => _criarTema(FcCores.escuro, Brightness.dark);
 
@@ -75,7 +73,6 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
     brightness: brilho,
     scaffoldBackgroundColor: c.surface100,
 
-    // ----- Cores base: os widgets do Flutter pegam daqui -----
     colorScheme: ColorScheme(
       brightness: brilho,
       primary: c.brand,
@@ -99,11 +96,9 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
       outlineVariant: c.line,
     ),
 
-    // ----- Fonte Manrope, a mesma da web -----
     textTheme: GoogleFonts.manropeTextTheme(ThemeData(brightness: brilho).textTheme)
         .apply(bodyColor: c.ink, displayColor: c.ink),
 
-    // ----- Barra do topo -----
     appBarTheme: AppBarThemeData(
       backgroundColor: c.surface100,
       foregroundColor: c.ink,
@@ -111,7 +106,6 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
       scrolledUnderElevation: 0,
     ),
 
-    // ----- Cards: brancos, borda fina, cantos de 16 -----
     cardTheme: CardThemeData(
       color: c.surface200,
       elevation: 0,
@@ -122,7 +116,6 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
       ),
     ),
 
-    // ----- Campos de texto e caixas de escolha -----
     inputDecorationTheme: InputDecorationThemeData(
       filled: true,
       fillColor: c.surface200,
@@ -133,7 +126,6 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
       focusedErrorBorder: borda(c.saida, 2),
     ),
 
-    // ----- Botão principal -----
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -142,7 +134,6 @@ ThemeData _criarTema(FcCores c, Brightness brilho) {
       ),
     ),
 
-    // ----- Botão flutuante e aviso de rodapé -----
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: c.brand,
       foregroundColor: Colors.white,
