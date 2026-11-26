@@ -6,7 +6,6 @@ import '../services/api.dart';
 // Lê o valor digitado e devolve um número. Aceita "12,50", "12.50" e "1.234,56".
 // Com vírgula: a vírgula é o decimal e os pontos são milhar.
 // Sem vírgula: o ponto é o decimal.
-// [LOCAL] Leitura do valor digitado (aceita vírgula ou ponto)
 double? _lerValor(String texto) {
   var limpo = texto.trim();
   if (limpo.contains(',')) {
@@ -19,7 +18,6 @@ double? _lerValor(String texto) {
 // TELA: cadastrar uma movimentação (entrada ou saída)
 // Ao salvar, volta para a tela anterior avisando "true" (salvou).
 // ======================================================================
-// [LOCAL] Tela "Nova movimentação" do app
 class NovaMovimentacaoScreen extends StatefulWidget {
   const NovaMovimentacaoScreen({super.key});
 
@@ -72,7 +70,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
   // ======================================================================
   // API: busca as contas e as categorias para as caixas de escolha
   // ======================================================================
-  // [LOCAL] Busca as opções das caixas: GET /accounts e /categories
   Future<void> _carregarListas() async {
     try {
       final respostas = await Future.wait([
@@ -113,7 +110,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
   // ======================================================================
   // SALVAR: valida os campos e envia para a API (que atualiza o saldo da conta)
   // ======================================================================
-  // [LOCAL] Salvar movimentação no app: POST /transactions e volta para a home
   Future<void> _salvar() async {
     // roda o "validator" de cada campo; se algum devolver erro, para aqui
     if (!_formKey.currentState!.validate()) return;
@@ -190,7 +186,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // [LOCAL] Seletor "Saída | Entrada" (topo do formulário)
           // ---------- Tipo: saída ou entrada ----------
           SegmentedButton<String>(
             segments: const [
@@ -211,7 +206,7 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
               hintText: '0,00',
               border: OutlineInputBorder(),
             ),
-            // [LOCAL] Validação do valor: maior que zero e no máximo 2 casas decimais
+            // Valor maior que zero e até 2 casas
             validator: (texto) {
               final valor = _lerValor(texto ?? '');
               if (valor == null || valor <= 0) return 'Informe um valor maior que zero';
@@ -224,7 +219,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // [LOCAL] Campo "Data": toca e abre o calendário (_escolherData)
           // ---------- Data (abre o calendário ao tocar) ----------
           InkWell(
             onTap: _escolherData,
@@ -256,7 +250,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ),
           const SizedBox(height: 16),
 
-          // [LOCAL] Caixas "Conta" e "Categoria"
           // ---------- Conta (caixa de escolha) ----------
           DropdownButtonFormField<int>(
             initialValue: _contaId,
@@ -317,7 +310,6 @@ class _NovaMovimentacaoScreenState extends State<NovaMovimentacaoScreen> {
           ],
           const SizedBox(height: 24),
 
-          // [LOCAL] Botão "Registrar saída" / "Registrar entrada" (fim do formulário)
           // ---------- Botão de salvar (vira bolinha enquanto envia) ----------
           FilledButton(
             onPressed: _salvando ? null : _salvar,

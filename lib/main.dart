@@ -7,7 +7,6 @@ void main() {
   runApp(const FinanceControlApp());
 }
 
-// [LOCAL] Início do app: tema claro/escuro (segue o celular) e primeira tela = login
 // Raiz do app: define o tema e qual é a primeira tela
 class FinanceControlApp extends StatelessWidget {
   const FinanceControlApp({super.key});

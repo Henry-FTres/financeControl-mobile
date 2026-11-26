@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../services/api.dart';
 import 'home_screen.dart';
 
-// [LOCAL] Tela de login do app
+// Tela de login
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _carregando = false;
   String? _erro;
 
-  // [LOCAL] Ação do botão "Entrar": chama login() e abre a home
+  // Faz o login e abre a home
   Future<void> _entrar() async {
     setState(() {
       _carregando = true;
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
                 const SizedBox(height: 24),
-                // [LOCAL] Botão "Entrar"
+                // Botão de entrar
                 FilledButton(
                   onPressed: _carregando ? null : _entrar,
                   child: _carregando
