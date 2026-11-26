@@ -4,7 +4,7 @@ import '../services/api.dart';
 import 'home_screen.dart';
 
 // Tela de login
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget { // porque a tela precisa mudar sozinha conforme o uso
   const LoginScreen({super.key});
 
   @override
@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _erro;
 
   // Faz o login e abre a home
-  Future<void> _entrar() async {
+  Future<void> _entrar() async { // chama login da api, se der certo, abre a home, se der errado, mostra o erro
     setState(() {
       _carregando = true;
       _erro = null;
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       // Troca o login pela home, sem permitir "voltar" para o login
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushReplacement( // funciona numa pilha. Em vez de empilhar a tela nova, remove a antiga e adiciona a nova, não permitindo voltar para a tela de login
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } catch (e) {
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // a arvore da tela de login. Roda na primeira vez, e denovo toda vez que um setState é chamado
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
                 const SizedBox(height: 24),
-                // Botão de entrar
+                // Botão de entrar, que vira uma bolinha girando enquanto espera
                 FilledButton(
                   onPressed: _carregando ? null : _entrar,
                   child: _carregando

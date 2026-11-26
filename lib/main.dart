@@ -18,8 +18,8 @@ class FinanceControlApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: temaClaro(), 
       darkTheme: temaEscuro(), 
-      themeMode: ThemeMode.system, 
-      home: const LoginScreen(),
+      themeMode: ThemeMode.system, // usa o tema do sistema (claro ou escuro)
+      home: const LoginScreen(), // sempre abre no login screen
     );
   }
 }

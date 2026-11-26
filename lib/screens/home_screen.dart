@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
     );
   }
 
-  // Sai da conta
+  // Botão Sair da conta
   Future<void> _sair() async { // apaga o token do celular e volta para a tela de login
     await AuthStorage.apagarToken();
     _irParaLogin();
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> { // é onde os dados da tela s
       // botão flutuante no canto de baixo para lançar uma movimentação
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _novaMovimentacao,
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.add), 
         label: const Text('Nova movimentação'),
       ),
     );
